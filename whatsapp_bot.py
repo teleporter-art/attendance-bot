@@ -1,7 +1,7 @@
 from flask import Flask, request
 import requests
 from bot import get_attendance   # ← imports your existing file
-
+print("BOT VERSION 2")
 # ===== GREEN API =====
 ID_INSTANCE = "7103531355"
 API_TOKEN = "99d7d35848a542fbb5040f9e3965c9e4f10a9137d7d443f38b"
@@ -71,6 +71,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
