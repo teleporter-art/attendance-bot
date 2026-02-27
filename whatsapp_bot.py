@@ -15,25 +15,28 @@ def send_whatsapp(chat_id, text):
     requests.post(SEND_URL, json=data)
 
 @app.route("/", methods=["POST"])
+@app.route("/", methods=["POST"])
 def webhook():
     data = request.json
+    print(data)
 
     try:
-        msg = data["messageData"]["textMessageData"]["textMessage"]
-        chat = data["senderData"]["chatId"]
+        if data.get("typeWebhook") == "incomingMessageReceived":
+            msg = data["messageData"]["textMessageData"]["textMessage"]
+            chat = data["senderData"]["chatId"]
 
-        if "attendance" in msg.lower():
-            percent = get_attendance()
-            send_whatsapp(chat, f"Your attendance is {percent}%")
+            if "attendance" in msg.lower():
+                percent = get_attendance()
+                send_whatsapp(chat, f"Your attendance is {percent}%")
 
     except Exception as e:
         print("Error:", e)
 
     return "ok"
 
-
 import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
