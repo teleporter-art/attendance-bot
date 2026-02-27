@@ -10,10 +10,21 @@ SEND_URL = f"https://api.green-api.com/waInstance{ID_INSTANCE}/sendMessage/{API_
 
 app = Flask(__name__)
 
-def send_whatsapp(chat_id, text):
-    data = {"chatId": chat_id, "message": text}
-    requests.post(SEND_URL, json=data)
+def send_whatsapp(chat, text):
+    import requests
 
+    # ensure WhatsApp format
+    if "@c.us" not in chat:
+        chat = chat + "@c.us"
+
+    url = f"{GREEN_API_URL}/waInstance{ID_INSTANCE}/sendMessage/{API_TOKEN}"
+
+    payload = {
+        "chatId": chat,
+        "message": text
+    }
+
+    requests.post(url, json=payload)
 @app.route("/", methods=["POST"])
 def webhook():
     data = request.json
@@ -45,5 +56,6 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
