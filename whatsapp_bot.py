@@ -13,7 +13,6 @@ app = Flask(__name__)
 def send_whatsapp(chat, text):
     import requests
 
-    # ensure WhatsApp format
     if "@c.us" not in chat:
         chat = chat + "@c.us"
 
@@ -24,7 +23,12 @@ def send_whatsapp(chat, text):
         "message": text
     }
 
-    requests.post(url, json=payload)
+    print("SENDING TO:", chat)
+    print("URL:", url)
+    print("PAYLOAD:", payload)
+
+    r = requests.post(url, json=payload)
+    print("GREEN API RESPONSE:", r.text)
 @app.route("/", methods=["POST"])
 def webhook():
     data = request.json
@@ -56,6 +60,7 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
